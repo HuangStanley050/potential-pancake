@@ -1,4 +1,23 @@
-export const checkBlog = async (event, context) => {};
+import chromium from "chrome-aws-lambda";
+import puppeteer from "puppeteer-core";
+
+export const checkBlog = async (event, context) => {
+  const executablePath = event.isOffline
+    ? "./node_modules/puppeteer/.local-chromium/linux-756035/chrome-linux/chrome"
+    : await chromium.executablePath;
+
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    //headless: true,
+    executablePath,
+  });
+  const page = await browser.newPage();
+  await page.goto(process.env.BLOG_ADDRESS);
+  // const result = await page.evaluate(() => {
+  //   return document.lastModified;
+  // });
+  // console.log(result);
+};
 
 /*
 const browser = await puppeteer.launch({headless:true});
