@@ -1,7 +1,7 @@
 # NOTE: update this with your service name
 service: check-blog-update
 
-# Create an optimized package for our functions 
+# Create an optimized package for our functions
 package:
   individually: true
 
@@ -20,13 +20,15 @@ provider:
   # the following line. Also, make sure to not
   # commit your .env.
   #
-  #environment:
-  #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
+environment:
+  BLOG_ADDRESS: ${env:BLOG_ADDRESS}
+
+custom:
+  serverless-offline:
+    port: 8000
 
 functions:
-  hello:
-    handler: handler.hello
+  checkBlog:
+    handler: handler.checkBlog
     events:
-      - http:
-          path: hello
-          method: get
+      - schedule: rate(1 day)
